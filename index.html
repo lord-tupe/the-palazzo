@@ -25,6 +25,7 @@
       --brass: #d4a359;
       --brass-deep: #b8863a;
       --line: #e5dcce;
+      --danger: #b54a3a;
       --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
       --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
       --wrap: min(72rem, calc(100% - 2.5rem));
@@ -503,60 +504,287 @@
       letter-spacing: 0.04em;
       color: var(--sage);
     }
-    .cal {
+
+    /* ---------- Date picker ---------- */
+    .dp-trigger-wrap {
+      position: relative;
+    }
+    .dp-trigger {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      min-height: 2.75rem;
+      padding: 0.5rem 0.75rem;
       border: 1px solid var(--line);
       background: var(--canvas);
-      padding: 1rem;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.9375rem;
+      text-align: left;
+      transition: border-color 200ms ease, background-color 200ms ease;
     }
-    .cal-head {
+    .dp-trigger:hover { border-color: var(--brass); }
+    .dp-trigger:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+    .dp-trigger > .fa-calendar { color: var(--sage); font-size: 0.875rem; }
+    .dp-trigger-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dp-trigger-text.placeholder { color: var(--sage); }
+    .dp-trigger > .fa-chevron-down {
+      color: var(--sage);
+      font-size: 0.6875rem;
+      transition: transform 200ms ease;
+    }
+    .dp-trigger[aria-expanded="true"] > .fa-chevron-down { transform: rotate(180deg); }
+
+    .dp-popover {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 45;
+      width: min(22.5rem, calc(100vw - 2.5rem));
+      margin-top: 0.5rem;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      border-radius: 0.5rem;
+      box-shadow: 0 24px 48px -16px rgb(12 22 18 / 0.22), 0 8px 16px -8px rgb(12 22 18 / 0.08);
+      animation: dpFadeIn 160ms ease-out;
+      max-height: calc(100dvh - 7rem);
+      overflow-y: auto;
+    }
+    .dp-popover[hidden] { display: none; }
+    @keyframes dpFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .dp-popover { animation: none; }
+    }
+
+    .dp-header {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .dp-input {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 150ms ease;
+    }
+    .dp-input:focus { border-color: var(--brass); }
+    .dp-input::placeholder { color: var(--sage); }
+    .dp-input.is-invalid { border-color: var(--danger); }
+    .dp-error {
+      margin: 0.5rem 0 0;
+      font-size: 0.75rem;
+      line-height: 1.4;
+      color: var(--danger);
+    }
+
+    .dp-quick {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .dp-quick button {
+      min-height: 1.875rem;
+      padding: 0 0.625rem;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.75rem;
+      border-radius: 999px;
+      transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+    }
+    .dp-quick button:hover { border-color: var(--brass); }
+    .dp-quick button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+    .dp-quick button[aria-pressed="true"] {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: var(--canvas);
+    }
+
+    .dp-modes {
+      display: flex;
+      gap: 0;
+      padding: 0.5rem 0.75rem 0;
+    }
+    .dp-modes button {
+      flex: 1;
+      min-height: 2.25rem;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--sage);
+      font: inherit;
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background-color 150ms ease, color 150ms ease;
+    }
+    .dp-modes button:first-child { border-right: 0; }
+    .dp-modes button:last-child { border-left: 0; }
+    .dp-modes button[aria-pressed="true"] {
+      background: var(--parchment);
+      color: var(--ink);
+    }
+    .dp-modes button:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
+
+    .dp-nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0.5rem;
     }
-    .cal-head button {
-      min-height: 2.75rem;
-      min-width: 2.75rem;
+    .dp-nav button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.25rem;
+      min-width: 2.25rem;
       border: 0;
       background: none;
       color: var(--ink);
-      font-size: 0.875rem;
+      font: inherit;
+      font-size: 0.75rem;
+      border-radius: 0.25rem;
+      transition: background-color 150ms ease;
     }
-    .cal-month {
-      margin: 0;
+    .dp-nav button:hover:not(:disabled) { background: var(--parchment); }
+    .dp-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+    .dp-nav button:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
+    .dp-month-label {
       font-family: var(--font-display);
-      font-size: 1.25rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      padding: 0 0.5rem;
     }
-    .cal-grid {
+
+    .dp-grid {
+      padding: 0 0.5rem 0.5rem;
+    }
+    .dp-row {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 0.25rem;
-      margin-top: 1rem;
+      gap: 0.0625rem;
+    }
+    .dp-dow {
+      padding: 0.375rem 0;
       text-align: center;
-    }
-    .cal-dow {
-      padding: 0.5rem 0;
-      font-size: 0.75rem;
-      letter-spacing: 0.04em;
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
       color: var(--sage);
+      user-select: none;
     }
-    .cal-day {
-      min-height: 2.75rem;
+    .dp-day {
+      position: relative;
+      min-height: 2.25rem;
       border: 0;
       background: none;
-      font-size: 0.875rem;
-      font-variant-numeric: tabular-nums;
       color: var(--ink);
+      font: inherit;
+      font-size: 0.8125rem;
+      font-variant-numeric: tabular-nums;
+      border-radius: 0.25rem;
+      transition: background-color 150ms ease, color 150ms ease;
     }
-    .cal-day[aria-pressed="true"] {
+    .dp-day:hover:not(:disabled) { background: var(--parchment); }
+    .dp-day:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
+    .dp-day:disabled { color: var(--line); cursor: not-allowed; }
+    .dp-day.is-today::after {
+      content: "";
+      position: absolute;
+      bottom: 0.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0.25rem;
+      height: 0.25rem;
+      border-radius: 50%;
+      background: var(--brass);
+      pointer-events: none;
+    }
+    .dp-day[aria-selected="true"] {
       background: var(--forest);
       color: var(--canvas);
     }
-    .cal-day:disabled { color: var(--line); }
-    .cal-day.is-today:not([aria-pressed="true"]) {
-      text-decoration: underline;
-      text-decoration-color: var(--brass);
-      text-underline-offset: 4px;
+    .dp-day[aria-selected="true"]:hover { background: var(--moss); }
+    .dp-day[aria-selected="true"].is-today::after { background: var(--brass); }
+    .dp-empty { min-height: 2.25rem; }
+
+    .dp-month-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem 0.75rem;
     }
+    .dp-month-card {
+      min-height: 4rem;
+      padding: 0.75rem;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      text-align: left;
+      color: var(--ink);
+      font: inherit;
+      border-radius: 0.375rem;
+      transition: border-color 150ms ease, background-color 150ms ease;
+    }
+    .dp-month-card:hover { border-color: var(--brass); }
+    .dp-month-card:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+    .dp-month-card[aria-selected="true"] { border-color: var(--brass); background: var(--parchment); }
+    .dp-month-card strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .dp-month-card small {
+      display: block;
+      margin-top: 0.125rem;
+      font-size: 0.6875rem;
+      color: var(--sage);
+    }
+
+    .dp-footer {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-top: 1px solid var(--line);
+      background: var(--parchment);
+    }
+    .dp-footer button {
+      flex: 1;
+      min-height: 2.5rem;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      transition: border-color 150ms ease, background-color 150ms ease;
+    }
+    .dp-footer button:hover { border-color: var(--brass); }
+    .dp-footer button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+    .dp-footer .dp-apply {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: var(--canvas);
+    }
+    .dp-footer .dp-apply:hover { background: var(--moss); border-color: var(--moss); }
+    .dp-footer .dp-apply:disabled { opacity: 0.45; }
+
+    @media (max-width: 380px) {
+      .dp-day { min-height: 2rem; font-size: 0.75rem; }
+      .dp-empty { min-height: 2rem; }
+      .dp-grid { padding: 0 0.25rem 0.5rem; }
+    }
+
     .service-row {
       display: grid;
       gap: 0.5rem;
@@ -645,7 +873,7 @@
       display: block;
       margin-top: 0.5rem;
       font-size: 0.875rem;
-      color: var(--forest);
+      color: var(--danger);
     }
     .hint {
       margin: 0.5rem 0 0;
@@ -1377,11 +1605,31 @@
             </fieldset>
 
             <div>
-              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:0.75rem">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:0.75rem;margin-bottom:0.75rem">
                 <p class="legend" style="margin:0">Date · service days only</p>
                 <button type="button" class="press" id="nextEvening" style="border:0;background:none;min-height:2.75rem;font-size:0.875rem;color:var(--ink);text-decoration:underline;text-decoration-color:var(--brass);text-underline-offset:4px">Next open evening</button>
               </div>
-              <div class="cal" id="calendar"></div>
+              <div class="dp-trigger-wrap">
+                <button type="button" class="dp-trigger" id="dateTrigger" aria-haspopup="dialog" aria-expanded="false" aria-controls="datePopover">
+                  <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                  <span class="dp-trigger-text placeholder" id="dateTriggerText">Choose a service date</span>
+                  <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="dp-popover" id="datePopover" role="dialog" aria-label="Choose a date" hidden>
+                  <div class="dp-header">
+                    <input type="text" class="dp-input" id="dpInput" placeholder="Try 'next Friday' or 'July 1'" autocomplete="off" spellcheck="false" aria-label="Type a date" />
+                    <p class="dp-error" id="dpInputError" hidden></p>
+                  </div>
+                  <div class="dp-quick" id="dpQuick"></div>
+                  <div class="dp-modes" id="dpModes"></div>
+                  <div class="dp-nav" id="dpNav"></div>
+                  <div id="dpBody"></div>
+                  <div class="dp-footer">
+                    <button type="button" class="dp-cancel" id="dpCancel">Cancel</button>
+                    <button type="button" class="dp-apply" id="dpApply" disabled>Apply</button>
+                  </div>
+                </div>
+              </div>
               <p class="field-error" id="dateError" hidden></p>
             </div>
 
@@ -1897,6 +2145,14 @@
     }).format(new Date(Date.UTC(y, m - 1, d)));
   }
 
+  function shortDate(iso) {
+    if (!iso) return "";
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Intl.DateTimeFormat("en-GB", {
+      weekday: "short", day: "numeric", month: "short", timeZone: "UTC",
+    }).format(new Date(Date.UTC(y, m - 1, d)));
+  }
+
   function partyLabel(party, partyPlus) {
     if (partyPlus) return "20 or more";
     return party === 1 ? "1 guest" : party + " guests";
@@ -1967,7 +2223,6 @@
     time: "19:30",
     party: 2,
     partyPlus: false,
-    cursor: null,
     menuCategory: "all",
     filters: [],
     eventType: "wedding",
@@ -1976,6 +2231,11 @@
     guests: 80,
     stalls: 12,
     suiteId: "vista",
+    // Date picker
+    pendingDate: "",
+    dpCursor: null,
+    dpViewMode: "day",
+    dpOpen: false,
   };
 
   function loadStorage() {
@@ -2032,6 +2292,464 @@
     document.getElementById("siteHeader").classList.toggle("solid", window.scrollY > 24 || document.getElementById("mobilePanel").classList.contains("open"));
   }
 
+  /* ---------- Date picker ---------- */
+
+  function renderDateTrigger() {
+    const text = document.getElementById("dateTriggerText");
+    if (state.date) {
+      text.textContent = shortDate(state.date);
+      text.classList.remove("placeholder");
+    } else {
+      text.textContent = "Choose a service date";
+      text.classList.add("placeholder");
+    }
+  }
+
+  function openDatePopover() {
+    if (state.dpOpen) return;
+    state.dpOpen = true;
+    state.pendingDate = state.date || "";
+    const today = blantyreNow();
+    if (state.pendingDate) {
+      const [y, m] = state.pendingDate.split("-").map(Number);
+      state.dpCursor = { year: y, month: m };
+    } else {
+      state.dpCursor = { year: today.year, month: today.month };
+    }
+    state.dpViewMode = "day";
+
+    const pop = document.getElementById("datePopover");
+    pop.hidden = false;
+    document.getElementById("dateTrigger").setAttribute("aria-expanded", "true");
+    renderDatePopover();
+
+    // Focus the natural-language input
+    setTimeout(() => {
+      const input = document.getElementById("dpInput");
+      input.value = "";
+      document.getElementById("dpInputError").hidden = true;
+      input.classList.remove("is-invalid");
+      input.focus();
+    }, 40);
+
+    // Outside click
+    setTimeout(() => document.addEventListener("mousedown", handleOutsideDateClick), 0);
+  }
+
+  function closeDatePopover() {
+    if (!state.dpOpen) return;
+    state.dpOpen = false;
+    state.pendingDate = "";
+    document.getElementById("datePopover").hidden = true;
+    document.getElementById("dateTrigger").setAttribute("aria-expanded", "false");
+    document.removeEventListener("mousedown", handleOutsideDateClick);
+    document.getElementById("dpInput").value = "";
+    document.getElementById("dpInputError").hidden = true;
+    document.getElementById("dpInput").classList.remove("is-invalid");
+  }
+
+  function handleOutsideDateClick(e) {
+    const pop = document.getElementById("datePopover");
+    const trigger = document.getElementById("dateTrigger");
+    if (pop.contains(e.target) || trigger.contains(e.target)) return;
+    closeDatePopover();
+  }
+
+  function applyDate() {
+    if (!state.pendingDate) return;
+    if (compareIso(state.pendingDate, blantyreNow().iso) < 0) return;
+    if (!isOpenDate(state.pendingDate)) return;
+    state.date = state.pendingDate;
+    document.getElementById("dateError").hidden = true;
+    renderDateTrigger();
+    updatePreview();
+    closeDatePopover();
+  }
+
+  function cancelDate() {
+    closeDatePopover();
+  }
+
+  function renderDatePopover() {
+    renderQuickPicks();
+    renderModes();
+    renderNav();
+    if (state.dpViewMode === "month") {
+      renderMonthGrid();
+    } else {
+      renderDayGrid();
+    }
+    const apply = document.getElementById("dpApply");
+    apply.disabled = !state.pendingDate;
+    apply.textContent = state.pendingDate ? "Apply " + shortDate(state.pendingDate) : "Apply";
+  }
+
+  function renderQuickPicks() {
+    const today = blantyreNow();
+    const picks = [
+      { label: "Next open", iso: nextBookable() },
+      { label: "This Fri", iso: nextWeekday(today.iso, 5) },
+      { label: "This Sat", iso: nextWeekday(today.iso, 6) },
+      { label: "This Sun", iso: nextWeekday(today.iso, 0) },
+    ];
+    document.getElementById("dpQuick").innerHTML = picks.map((p) =>
+      '<button type="button" data-quick="' + p.iso + '" aria-pressed="' + (p.iso === state.pendingDate) + '">' + p.label + '</button>'
+    ).join("");
+  }
+
+  function nextWeekday(iso, targetDay) {
+    const current = utcDayIndex(iso);
+    let delta = targetDay - current;
+    if (delta < 0) delta += 7;
+    return shiftIso(iso, delta);
+  }
+
+  function renderModes() {
+    document.getElementById("dpModes").innerHTML =
+      '<button type="button" data-mode="day" aria-pressed="' + (state.dpViewMode === "day") + '">Day</button>' +
+      '<button type="button" data-mode="month" aria-pressed="' + (state.dpViewMode === "month") + '">Month</button>';
+  }
+
+  function renderNav() {
+    if (state.dpViewMode === "month") {
+      document.getElementById("dpNav").innerHTML = "";
+      return;
+    }
+    const today = blantyreNow();
+    const { year, month } = state.dpCursor;
+    const horizon = addMonths(today.year, today.month, 3);
+    const atStart = year === today.year && month === today.month;
+    const atEnd = year > horizon.year || (year === horizon.year && month >= horizon.month);
+    document.getElementById("dpNav").innerHTML =
+      '<button type="button" data-nav="prev" ' + (atStart ? "disabled " : "") + 'aria-label="Previous month">&#9664;</button>' +
+      '<span class="dp-month-label">' + monthLabel(year, month) + '</span>' +
+      '<button type="button" data-nav="next" ' + (atEnd ? "disabled " : "") + 'aria-label="Next month">&#9654;</button>';
+  }
+
+  function renderDayGrid() {
+    const today = blantyreNow();
+    const { year, month } = state.dpCursor;
+    const cells = monthMatrix(year, month);
+    const todayIso = today.iso;
+
+    let html = '<div class="dp-grid" role="grid" aria-label="' + monthLabel(year, month) + '">';
+
+    // Header row
+    html += '<div class="dp-row" role="row">';
+    WEEKDAYS.forEach((d) => { html += '<div class="dp-dow" role="columnheader">' + d + '</div>'; });
+    html += '</div>';
+
+    // Day rows
+    for (let i = 0; i < cells.length; i += 7) {
+      html += '<div class="dp-row" role="row">';
+      for (let j = 0; j < 7; j++) {
+        const day = cells[i + j];
+        if (!day) {
+          html += '<div class="dp-empty" role="gridcell"></div>';
+          continue;
+        }
+        const iso = isoFromParts(year, month, day);
+        const closed = !isOpenDate(iso);
+        const past = compareIso(iso, todayIso) < 0;
+        const disabled = closed || past;
+        const selected = iso === state.pendingDate;
+        const isToday = iso === todayIso;
+        const tabIndex = selected || (!state.pendingDate && isToday && !disabled) ? 0 : -1;
+
+        let ariaLabel = formatLongDate(iso);
+        if (closed) ariaLabel += ", closed";
+        else if (past) ariaLabel += ", past";
+
+        let cls = "dp-day";
+        if (isToday) cls += " is-today";
+
+        html += '<button type="button" role="gridcell" class="' + cls + '" ' +
+          'data-day="' + iso + '" ' +
+          (disabled ? 'disabled ' : '') +
+          'aria-selected="' + selected + '" ' +
+          (isToday ? 'aria-current="date" ' : '') +
+          'aria-label="' + ariaLabel + '" ' +
+          'tabindex="' + tabIndex + '">' + day + '</button>';
+      }
+      html += '</div>';
+    }
+
+    html += '</div>';
+    document.getElementById("dpBody").innerHTML = html;
+  }
+
+  function renderMonthGrid() {
+    const today = blantyreNow();
+    const horizon = addMonths(today.year, today.month, 3);
+    const months = [];
+    let y = today.year, m = today.month;
+    while (y < horizon.year || (y === horizon.year && m <= horizon.month)) {
+      months.push({ year: y, month: m });
+      m++;
+      if (m > 12) { m = 1; y++; }
+    }
+
+    let html = '<div class="dp-month-grid">';
+    months.forEach(({ year, month }) => {
+      const openDays = countOpenDays(year, month);
+      const prefix = year + "-" + String(month).padStart(2, "0");
+      const selectedMonth = state.pendingDate && state.pendingDate.slice(0, 7) === prefix;
+      html += '<button type="button" class="dp-month-card" data-month="' + prefix + '" aria-selected="' + selectedMonth + '">' +
+        '<strong>' + monthLabel(year, month) + '</strong>' +
+        '<small>' + openDays + ' service ' + (openDays === 1 ? "day" : "days") + '</small>' +
+        '</button>';
+    });
+    html += '</div>';
+    document.getElementById("dpBody").innerHTML = html;
+  }
+
+  function countOpenDays(year, month) {
+    const count = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    let n = 0;
+    for (let d = 1; d <= count; d++) {
+      if (isOpenDate(isoFromParts(year, month, d))) n++;
+    }
+    return n;
+  }
+
+  function handlePopoverClick(e) {
+    const quick = e.target.closest("[data-quick]");
+    if (quick) { handleQuickClick(quick.getAttribute("data-quick")); return; }
+
+    const mode = e.target.closest("[data-mode]");
+    if (mode) { state.dpViewMode = mode.getAttribute("data-mode"); renderDatePopover(); return; }
+
+    const nav = e.target.closest("[data-nav]");
+    if (nav) { handleNavClick(nav.getAttribute("data-nav")); return; }
+
+    const day = e.target.closest("[data-day]");
+    if (day && !day.disabled) { handleDayClick(day.getAttribute("data-day")); return; }
+
+    const month = e.target.closest("[data-month]");
+    if (month) { handleMonthClick(month.getAttribute("data-month")); return; }
+  }
+
+  function handleQuickClick(iso) {
+    state.pendingDate = iso;
+    const [y, m] = iso.split("-").map(Number);
+    state.dpCursor = { year: y, month: m };
+    state.dpViewMode = "day";
+    renderDatePopover();
+  }
+
+  function handleDayClick(iso) {
+    state.pendingDate = iso;
+    renderDatePopover();
+    // Keep focus on the clicked day if possible
+    const btn = document.querySelector('[data-day="' + iso + '"]');
+    if (btn) btn.focus();
+  }
+
+  function handleMonthClick(prefix) {
+    const [y, m] = prefix.split("-").map(Number);
+    state.dpCursor = { year: y, month: m };
+    state.dpViewMode = "day";
+    renderDatePopover();
+  }
+
+  function handleNavClick(dir) {
+    const { year, month } = state.dpCursor;
+    if (dir === "prev") {
+      state.dpCursor = month === 1 ? { year: year - 1, month: 12 } : { year, month: month - 1 };
+    } else {
+      state.dpCursor = month === 12 ? { year: year + 1, month: 1 } : { year, month: month + 1 };
+    }
+    renderDatePopover();
+  }
+
+  function handleGridKeydown(e) {
+    const target = e.target.closest("[data-day]");
+    if (!target) return;
+
+    const iso = target.getAttribute("data-day");
+    let delta = 0;
+    if (e.key === "ArrowLeft") delta = -1;
+    else if (e.key === "ArrowRight") delta = 1;
+    else if (e.key === "ArrowUp") delta = -7;
+    else if (e.key === "ArrowDown") delta = 7;
+    else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleDayClick(iso);
+      return;
+    } else {
+      return;
+    }
+    e.preventDefault();
+
+    const todayIso = blantyreNow().iso;
+    let next = shiftIso(iso, delta);
+    let attempts = 0;
+    while (attempts < 40) {
+      if (isOpenDate(next) && compareIso(next, todayIso) >= 0) break;
+      next = shiftIso(next, delta > 0 ? 1 : -1);
+      attempts++;
+    }
+
+    const [ny, nm] = next.split("-").map(Number);
+    if (ny !== state.dpCursor.year || nm !== state.dpCursor.month) {
+      state.dpCursor = { year: ny, month: nm };
+      renderDatePopover();
+    }
+
+    const nextBtn = document.querySelector('[data-day="' + next + '"]');
+    if (nextBtn) {
+      document.querySelectorAll(".dp-day").forEach((b) => { b.tabIndex = -1; });
+      nextBtn.tabIndex = 0;
+      nextBtn.focus();
+    }
+  }
+
+  function handleNaturalInput(e) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const input = document.getElementById("dpInput");
+    const error = document.getElementById("dpInputError");
+    const text = input.value.trim();
+    if (!text) { error.hidden = true; input.classList.remove("is-invalid"); return; }
+
+    const iso = parseNaturalDate(text);
+
+    if (!iso) {
+      error.hidden = false;
+      error.textContent = "Couldn\u2019t read that date. Try \u2018next Friday\u2019, \u2018July 1\u2019, or \u20182026-10-15\u2019.";
+      input.classList.add("is-invalid");
+      return;
+    }
+
+    if (compareIso(iso, blantyreNow().iso) < 0) {
+      error.hidden = false;
+      error.textContent = "That date is in the past.";
+      input.classList.add("is-invalid");
+      return;
+    }
+
+    if (!isOpenDate(iso)) {
+      error.hidden = false;
+      error.textContent = "The house is closed that day. Service runs Thursday to Sunday.";
+      input.classList.add("is-invalid");
+      return;
+    }
+
+    error.hidden = true;
+    input.classList.remove("is-invalid");
+    state.pendingDate = iso;
+    const [y, m] = iso.split("-").map(Number);
+    state.dpCursor = { year: y, month: m };
+    state.dpViewMode = "day";
+    renderDatePopover();
+    input.value = "";
+  }
+
+  /* ---------- Natural-language date parsing ---------- */
+
+  function parseNaturalDate(text) {
+    const input = text.trim().toLowerCase();
+    if (!input) return null;
+    const now = blantyreNow();
+
+    // ISO: 2026-10-15
+    let m = input.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (m) return safeDate(Number(m[1]), Number(m[2]), Number(m[3]));
+
+    // DD/MM/YYYY or DD/MM/YY
+    m = input.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+    if (m) {
+      let year = Number(m[3]);
+      if (year < 100) year += 2000;
+      return safeDate(year, Number(m[2]), Number(m[1]));
+    }
+
+    if (input === "today") return now.iso;
+    if (input === "tomorrow") return shiftIso(now.iso, 1);
+
+    // Day names with optional modifier
+    const dayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const dayAbbr = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+    m = input.match(/^(?:(next|this|coming)\s+)?([a-z]+)$/);
+    if (m) {
+      const modifier = m[1] || "";
+      let dayIdx = dayNames.indexOf(m[2]);
+      if (dayIdx === -1) dayIdx = dayAbbr.indexOf(m[2]);
+      if (dayIdx !== -1) {
+        const current = now.dayIndex;
+        let delta = dayIdx - current;
+        if (delta < 0) delta += 7;
+        if (modifier === "next" && delta === 0) delta = 7;
+        return shiftIso(now.iso, delta);
+      }
+    }
+
+    // Month names
+    const monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+    const monthAbbr = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+    // "July 1" or "July 1st"
+    m = input.match(/^([a-z]+)\s+(\d{1,2})(?:st|nd|rd|th)?$/);
+    if (m) {
+      let mi = monthNames.indexOf(m[1]);
+      if (mi === -1) mi = monthAbbr.indexOf(m[1]);
+      if (mi !== -1) {
+        return resolveMonthDay(now, mi + 1, Number(m[2]));
+      }
+    }
+
+    // "1 July" or "1st July"
+    m = input.match(/^(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)$/);
+    if (m) {
+      let mi = monthNames.indexOf(m[2]);
+      if (mi === -1) mi = monthAbbr.indexOf(m[2]);
+      if (mi !== -1) {
+        return resolveMonthDay(now, mi + 1, Number(m[1]));
+      }
+    }
+
+    // Just a month name: "July"
+    m = input.match(/^([a-z]+)$/);
+    if (m) {
+      let mi = monthNames.indexOf(m[1]);
+      if (mi === -1) mi = monthAbbr.indexOf(m[1]);
+      if (mi !== -1) {
+        let year = now.year;
+        let iso = firstOpenDay(year, mi + 1);
+        if (compareIso(iso, now.iso) < 0) {
+          year += 1;
+          iso = firstOpenDay(year, mi + 1);
+        }
+        return iso;
+      }
+    }
+
+    return null;
+  }
+
+  function safeDate(y, m, d) {
+    if (m < 1 || m > 12 || d < 1 || d > 31) return null;
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== m - 1 || dt.getUTCDate() !== d) return null;
+    return isoFromParts(y, m, d);
+  }
+
+  function resolveMonthDay(now, month, day) {
+    const thisYear = safeDate(now.year, month, day);
+    if (!thisYear) return null;
+    if (compareIso(thisYear, now.iso) >= 0) return thisYear;
+    return safeDate(now.year + 1, month, day);
+  }
+
+  function firstOpenDay(year, month) {
+    const count = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    for (let d = 1; d <= count; d++) {
+      const iso = isoFromParts(year, month, d);
+      if (isOpenDate(iso)) return iso;
+    }
+    return isoFromParts(year, month, 1);
+  }
+
   /* ---------- Reserve ---------- */
   function renderZones() {
     const grid = document.getElementById("zoneGrid");
@@ -2046,55 +2764,6 @@
       btn.addEventListener("click", () => {
         state.zoneId = btn.getAttribute("data-zone");
         renderZones();
-        updatePreview();
-      });
-    });
-  }
-
-  function renderCalendar() {
-    const today = blantyreNow();
-    if (!state.cursor) state.cursor = { year: today.year, month: today.month };
-    const { year, month } = state.cursor;
-    const horizon = addMonths(today.year, today.month, 3);
-    const atStart = year === today.year && month === today.month;
-    const atEnd = year > horizon.year || (year === horizon.year && month >= horizon.month);
-    const cells = monthMatrix(year, month);
-
-    let html = '<div class="cal-head">' +
-      '<button type="button" class="press" id="calPrev"' + (atStart ? " disabled" : "") + '>Previous</button>' +
-      '<p class="cal-month">' + monthLabel(year, month) + '</p>' +
-      '<button type="button" class="press" id="calNext"' + (atEnd ? " disabled" : "") + '>Next</button>' +
-      '</div><div class="cal-grid">';
-    WEEKDAYS.forEach((d) => { html += '<div class="cal-dow">' + d + '</div>'; });
-    cells.forEach((day, i) => {
-      if (!day) { html += "<div></div>"; return; }
-      const iso = isoFromParts(year, month, day);
-      const closed = !isOpenDate(iso);
-      const past = compareIso(iso, today.iso) < 0;
-      const selected = iso === state.date;
-      const disabled = closed || past;
-      html += '<button type="button" class="cal-day press' + (iso === today.iso ? " is-today" : "") + '" data-iso="' + iso + '" aria-label="' + iso + '" aria-pressed="' + selected + '"' + (disabled ? " disabled" : "") + ">" + day + "</button>";
-    });
-    html += "</div>";
-    document.getElementById("calendar").innerHTML = html;
-
-    const prev = document.getElementById("calPrev");
-    const next = document.getElementById("calNext");
-    if (prev) prev.onclick = () => {
-      const m = state.cursor.month - 1;
-      state.cursor = m < 1 ? { year: state.cursor.year - 1, month: 12 } : { year: state.cursor.year, month: m };
-      renderCalendar();
-    };
-    if (next) next.onclick = () => {
-      const m = state.cursor.month + 1;
-      state.cursor = m > 12 ? { year: state.cursor.year + 1, month: 1 } : { year: state.cursor.year, month: m };
-      renderCalendar();
-    };
-    document.querySelectorAll(".cal-day[data-iso]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        state.date = btn.getAttribute("data-iso");
-        document.getElementById("dateError").hidden = true;
-        renderCalendar();
         updatePreview();
       });
     });
@@ -2672,10 +3341,19 @@
     };
 
     renderZones();
-    renderCalendar();
+    renderDateTrigger();
     renderServices();
     renderTimes();
     updatePartyUI();
+
+    // Date picker events
+    document.getElementById("dateTrigger").addEventListener("click", openDatePopover);
+    document.getElementById("dpCancel").addEventListener("click", cancelDate);
+    document.getElementById("dpApply").addEventListener("click", applyDate);
+    document.getElementById("dpInput").addEventListener("keydown", handleNaturalInput);
+    document.getElementById("datePopover").addEventListener("click", handlePopoverClick);
+    document.getElementById("dpBody").addEventListener("keydown", handleGridKeydown);
+
     document.getElementById("partyMinus").onclick = () => {
       if (state.partyPlus) { state.partyPlus = false; state.party = 20; }
       else state.party = Math.max(1, state.party - 1);
@@ -2688,16 +3366,15 @@
     };
     document.getElementById("nextEvening").onclick = () => {
       const iso = nextBookable();
-      const [y, m] = iso.split("-").map(Number);
-      state.cursor = { year: y, month: m };
       state.date = iso;
       state.service = "dinner";
       state.time = "19:30";
       document.getElementById("dateError").hidden = true;
-      renderCalendar();
+      renderDateTrigger();
       renderServices();
       renderTimes();
       updatePreview();
+      if (state.dpOpen) closeDatePopover();
     };
     document.getElementById("guestName").addEventListener("input", updatePreview);
     document.getElementById("sendReserve").onclick = submitReservation;
@@ -2740,6 +3417,7 @@
     });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
+        if (state.dpOpen) { closeDatePopover(); return; }
         ["ticketDialog", "bookingsDialog", "tastingDialog"].forEach((id) => {
           if (document.getElementById(id).classList.contains("open")) closeDialog(id);
         });
