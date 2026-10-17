@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
       --canvas: #faf8f5;
@@ -1222,6 +1223,41 @@
       white-space: nowrap;
       border: 0;
     }
+
+    /* Floating tasting bar */
+    .tasting-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 35;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 0.85rem 1.25rem;
+      background: var(--ink);
+      color: var(--canvas);
+      box-shadow: 0 -8px 32px rgb(12 22 18 / 0.18);
+    }
+    .tasting-bar.visible { display: flex; }
+    .tasting-bar p { margin: 0; font-size: 0.875rem; }
+    .tasting-bar .btn { min-height: 2.5rem; padding: 0.4rem 1rem; }
+    .tasting-bar .btn-ghost {
+      background: transparent;
+      color: var(--mist);
+      border-color: var(--canopy);
+    }
+    .tasting-bar .btn-ghost:hover { color: var(--canvas); border-color: var(--brass); }
+    body.has-tasting-bar { padding-bottom: 4.5rem; }
+
+    .btn-wa {
+      background: #25d366;
+      color: #fff;
+    }
+    .btn-wa:hover { background: #1da851; color: #fff; }
+
   </style>
 </head>
 <body>
@@ -1298,7 +1334,7 @@
           <p class="kicker">The house</p>
           <h2 class="section-title" id="about-title">A garden restaurant on Kabula Hill.</h2>
           <p class="section-lead">Late afternoon is quiet up here. The terrace faces the slope toward Michiru, the oven and the grill run together, and the dining room keeps a lower light once the sun drops.</p>
-          <p class="section-lead">The kitchen grills fillet, T-bone, and rib-eye with baby roast potatoes, bakes thin-crust pizzas, and — Thursday to Sunday — puts out a chocolate cheesecake and a lotus biscuit cheesecake. Milkshakes are a house habit. The lawn also hosts pop-up markets and private gatherings. A few rooms sit on the same grounds, if you would rather walk to dinner.</p>
+          <p class="section-lead">The kitchen grills fillet, T-bone, and rib-eye with baby roast potatoes, bakes thin-crust pizzas, and, Thursday to Sunday, puts out a chocolate cheesecake and a lotus biscuit cheesecake. Milkshakes are a house habit. The lawn also hosts pop-up markets and private gatherings. A few rooms sit on the same grounds, if you would rather walk to dinner.</p>
         </div>
         <figure>
           <div class="about-visual" role="img" aria-label="The dining salon, with deep green walls and linen tables"></div>
@@ -1328,7 +1364,7 @@
       <div class="wrap">
         <p class="kicker">Tables</p>
         <h2 class="section-title" id="reserve-title">Ask the floor for a table.</h2>
-        <p class="section-lead">Choose a zone, a service day, and a time. You will get a reference on this device and a WhatsApp message ready for +265 882 499 865. The house confirms — the site does not hold the table by itself.</p>
+        <p class="section-lead">Choose a zone, a service day, and a time. You will get a reference on this device and a WhatsApp message ready for +265 882 499 865. The house confirms; the site does not hold the table by itself.</p>
 
         <div class="reserve-layout">
           <div class="stack-gap">
@@ -1386,7 +1422,7 @@
               <p class="ticket-meta" id="previewParty" style="color:var(--ink);font-variant-numeric:tabular-nums">2 guests</p>
               <p class="ticket-meta" id="previewName" style="color:var(--ink)">Name</p>
               <p class="ticket-status" id="previewStatus">Pick a service day to see how the room sits.</p>
-              <button type="button" class="btn press btn-block" id="sendReserve" style="margin-top:1.5rem">Send on WhatsApp</button>
+              <button type="button" class="btn press btn-block" id="sendReserve" style="margin-top:1.5rem"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Send on WhatsApp</button>
               <p class="ticket-note">Opens WhatsApp with the request filled in, and keeps a copy on this device.</p>
             </div>
           </aside>
@@ -1400,7 +1436,7 @@
           <div>
             <p class="kicker">Kitchen</p>
             <h2 class="section-title" id="menu-title">The list, in kwacha.</h2>
-            <p class="section-lead">Pizzas from the wood oven, the grill, garden plates, the Thursday-to-Sunday cakes, and the cellar. Save a tasting list for the table. Halal-friendly means the plate itself has no pork and no alcohol — it is not a separate certified kitchen, so ask the floor if that matters to you.</p>
+            <p class="section-lead">Pizzas from the wood oven, the grill, garden plates, the Thursday-to-Sunday cakes, and the cellar. Save a tasting list for the table. Halal-friendly means the plate itself has no pork and no alcohol; it is not a separate certified kitchen, so ask the floor if that matters to you.</p>
           </div>
           <div style="font-size:0.875rem;color:var(--sage)">
             <p style="margin:0;letter-spacing:0.04em">Prices</p>
@@ -1486,7 +1522,7 @@
                 <input class="field-dark" id="eventWhen" placeholder="A Sunday in June, or still open" />
               </label>
               <p class="warn-brass" id="eventError" hidden></p>
-              <button type="button" class="btn press btn-block" id="sendEvent" style="margin-top:1.25rem">Send the enquiry</button>
+              <button type="button" class="btn press btn-block" id="sendEvent" style="margin-top:1.25rem"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Send the enquiry</button>
             </div>
           </aside>
         </div>
@@ -1497,7 +1533,7 @@
       <div class="wrap">
         <p class="kicker">Residences</p>
         <h2 class="section-title" id="stay-title">Sleep on the hill, walk down to dinner.</h2>
-        <p class="section-lead">Three rooms on the same grounds as the restaurant. Rates are nightly, in kwacha. The concierge confirms availability — the site only prepares the note.</p>
+        <p class="section-lead">Three rooms on the same grounds as the restaurant. Rates are nightly, in kwacha. The concierge confirms availability; the site only prepares the note.</p>
         <div class="suite-grid" id="suiteGrid"></div>
         <form class="stay-form" id="stayForm">
           <label class="label">Name
@@ -1581,6 +1617,13 @@
     </div>
   </footer>
 
+
+  <div class="tasting-bar" id="tastingBar" role="status" aria-live="polite">
+    <p><span id="tastingBarCount">0</span> saved for the table</p>
+    <button type="button" class="btn press" id="tastingBarView">View list</button>
+    <button type="button" class="btn btn-ghost press" id="tastingBarClear">Clear</button>
+  </div>
+
   <!-- Ticket dialog -->
   <div class="dialog-root" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketTitle" hidden>
     <div class="dialog-backdrop" data-close></div>
@@ -1592,7 +1635,7 @@
       <p style="margin:0.25rem 0 0;font-family:var(--font-display);font-size:1.5rem;font-variant-numeric:tabular-nums" id="ticketRef"></p>
       <dl style="margin:1.25rem 0 0;padding-top:1rem;border-top:1px solid var(--line)" id="ticketDetails"></dl>
       <div class="dialog-actions">
-        <a class="btn press" id="ticketWhatsApp" href="#" target="_blank" rel="noreferrer">Open WhatsApp again</a>
+        <a class="btn press" id="ticketWhatsApp" href="#" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Open WhatsApp again</a>
         <a class="btn btn-line press" id="ticketEmail" href="#">Email the house instead</a>
         <button type="button" class="press" data-close style="border:0;background:none;min-height:2.75rem;color:var(--sage)">Close</button>
       </div>
@@ -1689,7 +1732,7 @@
     { id: "hibiscus", name: "Hibiscus spritz", detail: "Hibiscus, sparkling wine, orange.", price: 15000, category: "cellar", tags: ["chef"] },
     { id: "old-fashioned", name: "Michiru old fashioned", detail: "Whiskey, bitters, orange oil. Stirred.", price: 18000, category: "cellar", tags: ["chef"] },
     { id: "cooler", name: "Garden cooler", detail: "Zero-proof. Lime, ginger, herbs, soda. No alcohol.", price: 8000, category: "cellar", tags: ["vegetarian", "halal", "gf"] },
-    { id: "house-red", name: "House red, glass", detail: "The pour we pair with the grill. Bottle available — ask the floor.", price: 12000, category: "cellar", tags: [] },
+    { id: "house-red", name: "House red, glass", detail: "The pour we pair with the grill. Bottle available; ask the floor.", price: 12000, category: "cellar", tags: [] },
     { id: "house-white", name: "House white, glass", detail: "Crisp, for chambo, funghi, and the late afternoon.", price: 12000, category: "cellar", tags: [] },
     { id: "ginger", name: "Malawi ginger beer", detail: "Still, spicy, cold. No alcohol.", price: 6000, category: "cellar", tags: ["vegetarian", "halal", "gf"] },
   ];
@@ -1898,7 +1941,7 @@
     const zone = zoneById(r.zoneId);
     const service = serviceById(r.service);
     return [
-      "Table request — " + HOUSE.name,
+      "Table request · " + HOUSE.name,
       "Reference: " + r.id,
       "Name: " + r.name,
       "Phone: " + r.phone,
@@ -1952,6 +1995,7 @@
         reservations: state.reservations,
       }));
     } catch (e) { /* ignore */ }
+    if (typeof updateTastingBar === "function") updateTastingBar();
   }
 
   /* ---------- UI: header / status ---------- */
@@ -2094,7 +2138,7 @@
       hint.textContent = "Parties over 20 are arranged as a garden booking. The events desk will follow up.";
     } else if (state.party > zone.maxParty) {
       hint.hidden = false;
-      hint.textContent = zone.name + " is comfortable up to " + zone.maxParty + ". You can still send the request — the floor may move you, or split the seating.";
+      hint.textContent = zone.name + " is comfortable up to " + zone.maxParty + ". You can still send the request; the floor may move you, or split the seating.";
     } else {
       hint.hidden = true;
     }
@@ -2116,7 +2160,7 @@
     if (state.date && state.time) {
       const av = tableAvailability(state.zoneId, state.date, state.time);
       if (av.tone === "request") {
-        status = "This seating is fully spoken for in the model. Send it anyway — the floor may still find a way, or offer another time.";
+        status = "This seating is fully spoken for in the model. Send it anyway; the floor may still find a way, or offer another time.";
       } else if (av.tone === "limited") {
         status = av.left + (av.left === 1 ? " table" : " tables") + " left in this seating. The house still confirms on WhatsApp.";
       } else {
@@ -2317,7 +2361,7 @@
     const note = document.getElementById("zoneCapacityNote");
     if (state.guests > zone.capacity) {
       note.className = "warn-brass";
-      note.textContent = zone.name + " seats about " + zone.capacity + ". For " + state.guests + ", the lower lawn is the honest fit — or send the note and ask the desk to redraw it.";
+      note.textContent = zone.name + " seats about " + zone.capacity + ". For " + state.guests + ", the lower lawn is the honest fit, or send the note and ask the desk to redraw it.";
     } else {
       note.className = "hint";
       note.style.color = "var(--mist)";
@@ -2362,7 +2406,7 @@
     const stallFee = type.id === "market" ? state.stalls * 15000 : 0;
     const total = type.base + zone.fee + kitchen + stallFee;
     const lines = [
-      "Garden enquiry — " + HOUSE.name,
+      "Garden enquiry · " + HOUSE.name,
       "Name: " + name,
       when ? "When: " + when : "When: to be decided",
       "Occasion: " + type.name,
@@ -2435,7 +2479,7 @@
     err.hidden = true;
     const suite = SUITES.find((s) => s.id === state.suiteId);
     const message = [
-      "Stay enquiry — " + HOUSE.name,
+      "Stay enquiry · " + HOUSE.name,
       "Name: " + name,
       "Room: " + suite.name,
       "Arrival: " + arrival,
@@ -2522,7 +2566,7 @@
         '<button type="button" class="press muted" data-unsave="' + d.id + '" style="border:0;background:none;min-height:2.75rem;padding:0;font-size:0.875rem;color:var(--sage)">Remove</button></div>' +
         '<p style="margin:0;font-variant-numeric:tabular-nums">' + formatMoney(d.price, state.currency) + '</p></li>'
       )).join("") + '</ul>' +
-        '<button type="button" class="btn press btn-block" id="sendTasting" style="margin-top:1rem">Send list on WhatsApp</button>';
+        '<button type="button" class="btn press btn-block" id="sendTasting" style="margin-top:1rem"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Send list on WhatsApp</button>';
       body.querySelectorAll("[data-unsave]").forEach((btn) => {
         btn.addEventListener("click", () => {
           state.wishlist = state.wishlist.filter((id) => id !== btn.getAttribute("data-unsave"));
@@ -2536,10 +2580,21 @@
       if (send) send.onclick = () => {
         const lines = saved.map((d) => "– " + d.name + " (" + formatMoney(d.price, "MWK") + ")").join("\n");
         const total = saved.reduce((s, d) => s + d.price, 0);
-        window.open(whatsAppLink("Tasting list — The Palazzo\n" + lines + "\nTogether: " + formatMoney(total, "MWK") + "\nWe may order these on our visit."), "_blank", "noopener,noreferrer");
+        window.open(whatsAppLink("Tasting list · The Palazzo\n" + lines + "\nTogether: " + formatMoney(total, "MWK") + "\nWe may order these on our visit."), "_blank", "noopener,noreferrer");
       };
     }
     openDialog("tastingDialog");
+  }
+
+
+  function updateTastingBar() {
+    const n = state.wishlist.length;
+    const bar = document.getElementById("tastingBar");
+    const count = document.getElementById("tastingBarCount");
+    if (!bar || !count) return;
+    count.textContent = String(n);
+    bar.classList.toggle("visible", n > 0);
+    document.body.classList.toggle("has-tasting-bar", n > 0);
   }
 
   function updateBookingsButton() {
@@ -2592,6 +2647,18 @@
     document.getElementById("mobileTasting").onclick = () => {
       document.getElementById("mobilePanel").classList.remove("open");
       openTasting();
+    };
+
+
+    const tBarView = document.getElementById("tastingBarView");
+    const tBarClear = document.getElementById("tastingBarClear");
+    if (tBarView) tBarView.onclick = openTasting;
+    if (tBarClear) tBarClear.onclick = () => {
+      state.wishlist = [];
+      saveStorage();
+      renderFilters();
+      renderMenu();
+      updateTastingBar();
     };
 
     renderZones();
@@ -2653,6 +2720,7 @@
 
     updateCurrencyUI();
     updateBookingsButton();
+    updateTastingBar();
 
     document.querySelectorAll(".dialog-root [data-close]").forEach((el) => {
       el.addEventListener("click", () => {
